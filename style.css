@@ -21,9 +21,15 @@ h1 {
     margin-bottom: 20px; /* メッセージとメインコンテナの間の間隔 */
     font-weight: bold;
     color: #333;
-    min-height: 20px;
+    height: 3em; /* メッセージの固定の高さ（例: 2行分相当）。適宜調整してください。 */
+    overflow-y: auto; /* 内容がはみ出したらスクロールバーを表示 */
     width: 100%;
     text-align: center;
+    padding: 5px 10px; /* 上下5px、左右10pxのパディングを追加 */
+    box-sizing: border-box; /* paddingを含めてwidth/heightを計算 */
+    /* 背景色やボーダーを追加して、スクロールエリアであることを分かりやすくすることもできます */
+    /* background-color: #e0e0e0; */
+    /* border: 1px solid #ccc; */
 }
 
 /* --- メインコンテナのレスポンシブ対応 --- */
@@ -110,12 +116,8 @@ h1 {
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 0; /* 盤面と上端を揃える */
-    
-    /* ここから追加・修正 */
-    max-height: 300px; /* ★重要: ルール欄の最大高さを設定。この高さを超えるとスクロールバーが出現 */
-    overflow-y: auto;  /* ★重要: 垂直方向のスクロールバーを必要に応じて表示 */
-    overflow-x: hidden; /* 横方向のスクロールバーは非表示 */
-    /* スクロールバーの見た目を調整する場合は、追加のCSSが必要になることがあります */
+    height: 350px; /* ルール欄の高さ。内容がこれを超えるとスクロール */
+    overflow-y: auto; /* 縦方向のスクロールを有効にする */
 }
 
 .rules-container h2 {
@@ -151,6 +153,7 @@ h1 {
     .rules-container {
         width: 90%;             /* 幅を画面の90%にする */
         max-width: 400px;       /* あまり広がりすぎないように最大幅も設定 */
+        height: 250px; /* スマホやタブレットでは高さを少し抑える */
     }
 }
 
