@@ -1,0 +1,148 @@
+/* style.css */
+
+body {
+    font-family: sans-serif;
+    display: flex; /* bodyをflexコンテナにする */
+    flex-direction: column; /* h1, main-container, message を縦並びにする */
+    align-items: center; /* 中央寄せ */
+    margin: 20px; /* 全体の余白 */
+    background-color: #f0f0f0; /* 背景色を追加 */
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px; /* タイトルとコンテンツの間隔 */
+}
+
+#message {
+    margin-top: 20px; /* main-container との間に間隔 */
+    font-weight: bold;
+    color: #333; /* 黒文字 */
+    min-height: 20px; /* メッセージが表示されないときに高さが変動しないように */
+    width: 100%; /* 全体の幅に合わせる */
+    text-align: center; /* 中央寄せ */
+}
+
+/* メインコンテナ: 盤面とルールを横並びにする */
+.main-container {
+    display: flex; /* board-container と rules-container を横並びにする */
+    align-items: flex-start; /* 上揃え */
+    /* margin-top は body に移したので不要 */
+}
+
+/* 盤面コンテナ */
+.board-container {
+    border: 2px solid #333; /* 盤面全体の枠を強調 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 影を追加 */
+    background-color: white; /* 盤面コンテナの背景色 */
+    margin-right: 30px; /* ルール表示との間隔 */
+}
+
+/* 盤面グリッド */
+#board {
+    display: grid;
+    grid-template-columns: repeat(5, 50px); /* 5列 */
+    grid-template-rows: repeat(8, 50px);    /* 8行 */
+    /* ここでborderをなくすことで、.cellのborderを盤面枠として利用する */
+    border: none;
+}
+
+/* 各マス目 */
+.cell {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #ccc; /* 各マス目の境界線 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px; /* 数字のサイズ */
+    cursor: pointer;
+    position: relative; /* 重ねるコマの絶対配置の基準にする */
+    overflow: hidden; /* コマがセルからはみ出さないように */
+    background-color: #e9e9e9; /* セル自体の背景色 */
+    box-sizing: border-box; /* paddingとborderをwidth/heightに含める */
+}
+
+/* 盤面全体の外枠を太く見せるためのスタイル (cellのborderを利用) */
+/* 盤面の一番上の行のセル */
+.cell[data-row="0"] {
+    border-top: 2px solid #333;
+}
+/* 盤面の一番下の行のセル */
+.cell[data-row="7"] { /* boardRows - 1 */
+    border-bottom: 2px solid #333;
+}
+/* 盤面の一番左の列のセル */
+.cell[data-col="0"] {
+    border-left: 2px solid #333;
+}
+/* 盤面の一番右の列のセル */
+.cell[data-col="4"] { /* boardCols - 1 */
+    border-right: 2px solid #333;
+}
+
+/* ゴールラインの視覚的表示 */
+.goal-line-p1 {
+    background-color: rgba(173, 216, 230, 0.4);
+}
+
+.goal-line-p2 {
+    background-color: rgba(240, 128, 128, 0.4);
+}
+
+/* 重ねられた個々のコマのスタイル */
+.stacked-piece {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    box-sizing: border-box;
+
+    width: 40px; /* 重ねるコマのサイズ */
+    height: 40px;
+    font-size: 18px;
+    
+    position: absolute; /* 親要素 (.cell) を基準に絶対配置 */
+    left: 50%; /* 中央寄せの開始点 */
+    transform: translateX(-50%); /* 中央寄せ */
+    border: 1px solid rgba(0, 0, 0, 0.2); /* コマの境界線 */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* コマに影を追加 */
+}
+
+/* 各プレイヤーの重ねられたコマの背景色 */
+.player1-stacked {
+    background-color: #007bff; /* 青系 */
+}
+
+.player2-stacked {
+    background-color: #dc3545; /* 赤系 */
+}
+
+/* ルールコンテナ */
+.rules-container {
+    width: 300px; /* ルール表示の幅 */
+    padding: 15px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 影を追加 */
+    margin-top: 0; /* 盤面と上端を揃える */
+}
+
+.rules-container h2 {
+    margin-top: 0;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px; /* タイトルとリストの間隔 */
+}
+
+.rules-container ol {
+    padding-left: 20px;
+    margin-top: 0;
+    line-height: 1.5; /* 行間を広げて読みやすく */
+}
+
+.rules-container li {
+    margin-bottom: 5px;
+}
