@@ -1,11 +1,11 @@
 /* style.css */
 
-/* --- 基本スタイル（既存のまま） --- */
+/* --- 基本スタイル --- */
 body {
     font-family: sans-serif;
     display: flex;
-    flex-direction: column; /* h1, main-container, message を縦並び */
-    align-items: center;
+    flex-direction: column; /* h1, message, main-container を縦並びにする */
+    align-items: center;    /* 横方向の中央寄せ */
     margin: 20px;
     background-color: #f0f0f0;
     min-width: 320px; /* 最小幅を設定して、極端な崩れを防ぐ */
@@ -13,11 +13,12 @@ body {
 
 h1 {
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 5px; /* メッセージとの間隔を小さくする */
 }
 
 #message {
-    margin-top: 20px;
+    margin-top: 5px;    /* タイトルとの間隔を小さくする */
+    margin-bottom: 20px; /* メッセージとメインコンテナの間の間隔 */
     font-weight: bold;
     color: #333;
     min-height: 20px;
@@ -29,12 +30,11 @@ h1 {
 .main-container {
     display: flex;
     flex-direction: row; /* デフォルトは横並び */
-    align-items: flex-start;
-    margin-top: 20px;
-    flex-wrap: wrap; /* 子要素（盤面とルール）が収まらない場合に折り返す */
+    align-items: flex-start; /* 上揃え */
+    flex-wrap: wrap;       /* 子要素が収まらない場合に折り返す */
     justify-content: center; /* 折り返した時に中央に寄せる */
-    width: 100%; /* 親要素の幅に合わせて広がるように */
-    max-width: 900px; /* 最大幅を設定して、広い画面で広がりすぎないように調整 */
+    width: 100%;           /* 親要素の幅に合わせて広がるように */
+    max-width: 900px;      /* 広い画面で広がりすぎないように最大幅を設定 */
 }
 
 .board-container {
@@ -45,7 +45,7 @@ h1 {
     flex-shrink: 0; /* 縮小されすぎないように */
 }
 
-/* 盤面グリッドのセルのサイズを調整 */
+/* 盤面グリッド */
 #board {
     display: grid;
     grid-template-columns: repeat(5, 50px); /* デフォルトのマス目サイズ */
@@ -53,22 +53,33 @@ h1 {
     border: none;
 }
 
+/* 各マス目 */
 .cell {
     width: 50px; /* デフォルトのマス目サイズ */
-    height: 50px; /* デフォルトのマス目サイズ */
+    height: 50px;
     border: 1px solid #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 20px;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    position: relative; /* 重ねるコマの絶対配置の基準にする */
+    overflow: hidden;   /* コマがセルからはみ出さないように */
     background-color: #e9e9e9;
-    box-sizing: border-box;
+    box-sizing: border-box; /* paddingとborderをwidth/heightに含める */
 }
 
-/* --- コマのスタイル（既存のまま） --- */
+/* 盤面全体の枠を太く見せるためのスタイル (cellのborderを利用) */
+.cell[data-row="0"] { border-top: 2px solid #333; }
+.cell[data-row="7"] { border-bottom: 2px solid #333; }
+.cell[data-col="0"] { border-left: 2px solid #333; }
+.cell[data-col="4"] { border-right: 2px solid #333; }
+
+/* ゴールラインの視覚的表示 */
+.goal-line-p1 { background-color: rgba(173, 216, 230, 0.4); }
+.goal-line-p2 { background-color: rgba(240, 128, 128, 0.4); }
+
+/* 重ねられた個々のコマのスタイル */
 .stacked-piece {
     display: flex;
     justify-content: center;
@@ -76,21 +87,21 @@ h1 {
     color: white;
     font-weight: bold;
     box-sizing: border-box;
-    width: 40px;
+    width: 40px; /* 重ねるコマのサイズ */
     height: 40px;
     font-size: 18px;
-    position: absolute;
+    position: absolute; /* 親要素 (.cell) を基準に絶対配置 */
     left: 50%;
     transform: translateX(-50%);
     border: 1px solid rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-.player1-stacked { background-color: #007bff; }
-.player2-stacked { background-color: #dc3545; }
+/* 各プレイヤーの重ねられたコマの背景色 */
+.player1-stacked { background-color: #007bff; } /* 青系 */
+.player2-stacked { background-color: #dc3545; } /* 赤系 */
 
-
-/* --- ルールコンテナのスタイル（既存のまま） --- */
+/* --- ルールコンテナのスタイル --- */
 .rules-container {
     width: 300px;
     padding: 15px;
@@ -99,6 +110,12 @@ h1 {
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 0; /* 盤面と上端を揃える */
+    
+    /* ここから追加・修正 */
+    max-height: 300px; /* ★重要: ルール欄の最大高さを設定。この高さを超えるとスクロールバーが出現 */
+    overflow-y: auto;  /* ★重要: 垂直方向のスクロールバーを必要に応じて表示 */
+    overflow-x: hidden; /* 横方向のスクロールバーは非表示 */
+    /* スクロールバーの見た目を調整する場合は、追加のCSSが必要になることがあります */
 }
 
 .rules-container h2 {
@@ -123,17 +140,17 @@ h1 {
 @media (max-width: 768px) {
     .main-container {
         flex-direction: column; /* 縦並びに変更 */
-        align-items: center; /* 中央揃え */
+        align-items: center;    /* 中央揃え */
     }
 
     .board-container {
-        margin-right: 0; /* 横並び時のマージンをリセット */
-        margin-bottom: 20px; /* 縦並び時にルールとの間にマージン */
+        margin-right: 0;        /* 横並び時のマージンをリセット */
+        margin-bottom: 20px;    /* 縦並び時にルールとの間にマージン */
     }
 
     .rules-container {
-        width: 90%; /* 幅を画面の90%にする */
-        max-width: 400px; /* あまり広がりすぎないように最大幅も設定 */
+        width: 90%;             /* 幅を画面の90%にする */
+        max-width: 400px;       /* あまり広がりすぎないように最大幅も設定 */
     }
 }
 
@@ -147,7 +164,7 @@ h1 {
 
     .cell {
         width: 45px; /* 45pxに縮小 */
-        height: 45px; /* 45pxに縮小 */
+        height: 45px;
         font-size: 18px; /* 数字も少し小さく */
     }
 
@@ -158,8 +175,6 @@ h1 {
     }
 
     .board-container {
-        /* スマホでボード全体が画面に収まるように、必要なら幅調整 */
-        /* 例えば、5マス * 45px + 2*2px (border) = 229px */
         width: calc(5 * 45px + 2 * 2px); /* 計算で盤面全体の幅を指定 */
         box-sizing: border-box; /* paddingとborderをwidth/heightに含める */
     }
@@ -174,7 +189,7 @@ h1 {
 
     .cell {
         width: 40px; /* 40pxに縮小 */
-        height: 40px; /* 40pxに縮小 */
+        height: 40px;
         font-size: 16px;
     }
 
